@@ -40,10 +40,13 @@ func main() {
 				break
 			}
 			if err != nil {
-				fmt.Errorf("server exit with error %v", recv)
+				fmt.Printf("server exit with error %v", recv)
 			}
 			if defaultType != "json" {
-				os.WriteFile(fmt.Sprintf("file%d", count), recv.Response, 0666)
+				err := os.WriteFile(fmt.Sprintf("file%d", count), recv.Response, 0666)
+				if err != nil {
+					fmt.Printf("file could not be saved, %v", err)
+				}
 			} else {
 				fmt.Printf("json response is %s\n", string(recv.Response))
 			}

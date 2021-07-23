@@ -70,7 +70,7 @@ func (server RandomServer) Random(ctx context.Context, entity *entities.CommonRe
 		if key == entity.ResponseType {
 			result, err = action(entity)
 			if err != nil {
-				fmt.Errorf("actions failed %s, %v", key, err)
+				return nil, fmt.Errorf("actions failed %s, %v", key, err)
 			}
 		}
 	}
@@ -83,7 +83,7 @@ func (server RandomServer) Random(ctx context.Context, entity *entities.CommonRe
 func generateJsonAction(request *entities.CommonRequest) ([]byte, error) {
 
 	if request.ResponseFields == nil {
-		return nil, fmt.Errorf("No field are given in parameters")
+		return nil, fmt.Errorf("no field are given in parameters")
 	}
 
 	data := make(map[string]string)
@@ -91,7 +91,7 @@ func generateJsonAction(request *entities.CommonRequest) ([]byte, error) {
 
 		array := []rune(request.ResponseFields[i])
 		if len(array) == 0 {
-			return nil, fmt.Errorf("A field cannot be empty")
+			return nil, fmt.Errorf("a field cannot be empty")
 		}
 
 		if array[0] < 'A' && array[0] > 'Z' {
@@ -122,12 +122,12 @@ type dogInfo struct {
 func fetchDogPictureAction(request *entities.CommonRequest) ([]byte, error) {
 	info, err := get("https://dog.ceo/api/breeds/image/random")
 	if err != nil {
-		return nil, fmt.Errorf("Cannot access web site, %v", err)
+		return nil, fmt.Errorf("cannot access web site, %v", err)
 	}
 	var dogInfo dogInfo
 	err = json.Unmarshal(info, &dogInfo)
 	if err != nil {
-		return nil, fmt.Errorf("Cannot read data, %v", err)
+		return nil, fmt.Errorf("cannot read data, %v", err)
 	}
 	return get(dogInfo.Message)
 }
@@ -135,7 +135,7 @@ func fetchDogPictureAction(request *entities.CommonRequest) ([]byte, error) {
 func get(url string) ([]byte, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		return nil, fmt.Errorf("GET %s failed, %+v\n", url, err)
+		return nil, fmt.Errorf("GET %s failed, %+v", url, err)
 	}
 
 	defer resp.Body.Close()
