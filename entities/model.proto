@@ -1,0 +1,19 @@
+syntax =  "proto3";
+
+option go_package="./";
+
+package entities;
+
+message CommonResponse {
+   bytes response = 1;
+}
+
+message CommonRequest {
+  string response_type = 1;
+  repeated string response_fields = 2;
+}
+
+service randomise {
+  rpc random(CommonRequest) returns (CommonResponse);
+  rpc randomStream(CommonRequest) returns (stream CommonResponse);
+}
